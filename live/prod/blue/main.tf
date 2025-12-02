@@ -13,7 +13,7 @@ module "launch_template_blue" {
   source              = "../../../modules/launch_template"
   name                = "blue-template"
   image_id            = "ami-0acd9fd39de089f9b"
-  instance_type       = "t3.micro"
+  instance_type       = "t4.micro"
   security_group_ids  = [data.terraform_remote_state.shared.outputs.security_group_blue_green_id]
   user_data           = base64encode(file("${path.module}/user_data_blue.sh"))
   tags                = { Environment = "blue" }

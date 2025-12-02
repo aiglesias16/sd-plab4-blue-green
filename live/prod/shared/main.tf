@@ -99,8 +99,8 @@ module "alb_blue_green" {
   security_group_ids = [module.security_group_alb.security_group_id]
   internal           = false
   vpc_id             = module.vpc.vpc_id
-  blue_weight        = 50
-  green_weight       = 50
+  blue_weight        = 0
+  green_weight       = 100
 }
 
 resource "aws_route_table" "public_1" {
