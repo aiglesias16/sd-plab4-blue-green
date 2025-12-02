@@ -33,7 +33,7 @@ module "nat_gateway_public_2" {
   subnet_id = module.vpc.public_subnet_ids["public-2"]
 }
 
-module "security_group" {
+module "security_group_alb" {
   source = "../../../modules/security_group"
   name = "prod-sg"
   vpc_id = module.vpc.vpc_id
@@ -43,6 +43,7 @@ module "security_group" {
       to_port     = 80
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
+      security_groups = []
       description = "Allow HTTP"
     },
     {
@@ -50,6 +51,7 @@ module "security_group" {
       to_port     = 443
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
+      security_groups = []
       description = "Allow HTTPS"
     }
   ]
@@ -64,11 +66,37 @@ module "security_group" {
   ]
 }
 
+module "security_group_blue_green" {
+  source  = "../../../modules/security_group"
+  name    = "blue-green-ec2-sg"
+  vpc_id  = module.vpc.vpc_id
+  ingress = [
+    {
+      from_port       = 80
+      to_port         = 80
+      protocol        = "tcp"
+      security_groups = [module.security_group_alb.security_group_id]
+      cidr_blocks     = []
+      description     = "Allow HTTP from ALB"
+    }
+  ]
+  egress = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow all outbound"
+    }
+  ]
+}
+
+
 module "alb_blue_green" {
   source             = "../../../modules/alb-gb"
   name               = "prod-alb"
   subnet_ids         = [module.vpc.public_subnet_ids["public-1"], module.vpc.public_subnet_ids["public-2"]]
-  security_group_ids = [module.security_group.security_group_id]
+  security_group_ids = [module.security_group_alb.security_group_id]
   internal           = false
   vpc_id             = module.vpc.vpc_id
   blue_weight        = 50
@@ -130,5 +158,4 @@ resource "aws_route_table_association" "private_2" {
   subnet_id      = module.vpc.private_subnet_ids["private-2"]
   route_table_id = aws_route_table.private_2.id
 }
-
 
