@@ -1,7 +1,7 @@
 resource "aws_security_group" "this" {
   name        = var.name
   vpc_id      = var.vpc_id
-  description = "Security Group gestionado por módulo"
+  description = "Security Group gestionado por modulo"
 
   dynamic "ingress" {
     for_each = var.ingress
