@@ -22,19 +22,19 @@ variable "vpc_zone_identifier" {
 variable "min_size" {
   description = "Número mínimo de instancias."
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "max_size" {
   description = "Número máximo de instancias."
   type        = number
-  default     = 3
+  default     = 4
 }
 
 variable "desired_capacity" {
   description = "Capacidad deseada de instancias."
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "target_group_arns" {
