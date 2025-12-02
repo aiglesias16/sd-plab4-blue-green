@@ -10,6 +10,7 @@ resource "aws_security_group" "this" {
       to_port     = ingress.value.to_port
       protocol    = ingress.value.protocol
       cidr_blocks = ingress.value.cidr_blocks
+      security_groups = ingress.value.security_groups
       description = ingress.value.description
     }
   }

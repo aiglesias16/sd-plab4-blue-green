@@ -7,10 +7,13 @@ output "public_subnet_ids" {
 output "private_subnet_ids" { 
     value = module.vpc.private_subnet_ids 
 }
-output "security_group_id" { 
-    value = module.security_group.security_group_id 
+output "security_group_alb_id" { 
+    value = module.security_group_alb.security_group_id 
 }
-output "alb_dns_name" { 
+output "security_group_blue_green_id" { 
+    value = module.security_group_blue_green.security_group_id 
+}
+output "alb_dns_name" {
     value = module.alb_blue_green.alb_dns_name 
 }
 output "blue_target_group_arn" { 

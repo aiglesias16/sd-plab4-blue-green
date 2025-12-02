@@ -15,6 +15,7 @@ variable "ingress" {
     to_port     = number
     protocol    = string
     cidr_blocks = list(string)
+    security_groups = list(string)
     description = string
   }))
   default = []
@@ -36,4 +37,10 @@ variable "tags" {
   description = "Tags adicionales para el Security Group."
   type        = map(string)
   default     = {}
+}
+
+variable "security_groups" {
+  description = "Lista de security groups permitidos en las reglas de entrada."
+  type        = list(string)
+  default     = []
 }
